@@ -1,0 +1,24 @@
+CURRENT_DIR := $(shell pwd)
+PREFIX = /opt/libs/live555/live555/release/live555-mips-uclibc
+LIBDIR = $(PREFIX)/lib
+
+#OPENSSL_DIR = /opt/libs/openssl/release/openssl-1.1.1-mips-uclibc
+
+COMPILE_OPTS =		$(INCLUDES) -I${OPENSSL_DIR}/include -I/usr/local/include -I. -O2 -DSOCKLEN_T=socklen_t -D_LARGEFILE_SOURCE=1 -D_FILE_OFFSET_BITS=64
+C =			c
+C_COMPILER =		mips-linux-uclibc-gnu-gcc
+C_FLAGS =		$(COMPILE_OPTS) $(CPPFLAGS) $(CFLAGS) -DNO_STD_LIB
+CPP =			cpp
+CPLUSPLUS_COMPILER =	mips-linux-uclibc-gnu-g++
+CPLUSPLUS_FLAGS =	$(COMPILE_OPTS) -Wall -DBSD=1 $(CPPFLAGS) $(CXXFLAGS) -DNO_STD_LIB -DNO_OPENSSL
+OBJ =			o
+LINK =			mips-linux-uclibc-gnu-g++ -o
+LINK_OPTS =		-L. $(LDFLAGS)
+CONSOLE_LINK_OPTS =	$(LINK_OPTS)
+LIBRARY_LINK =		mips-linux-uclibc-gnu-ar cr 
+LIBRARY_LINK_OPTS =	
+LIB_SUFFIX =			a
+#LIBS_FOR_CONSOLE_APPLICATION = -lssl -lcrypto
+#LIBS_FOR_CONSOLE_APPLICATION = $(OPENSSL_DIR)/lib/libssl.so $(OPENSSL_DIR)/lib/libcrypto.so
+LIBS_FOR_GUI_APPLICATION =
+EXE =
