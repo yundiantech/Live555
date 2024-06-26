@@ -108,29 +108,64 @@ int main(int argc, char** argv) {
     announceStream(rtspServer, sms, streamName, inputFileName);
   }
 
+  // // A H.264 video elementary stream:
+  // {
+  //   char const* streamName = "h264ESVideoTest";
+  //   char const* inputFileName = "test.264";
+  //   ServerMediaSession* sms
+  //     = ServerMediaSession::createNew(*env, streamName, streamName,
+	// 			      descriptionString);
+  //   sms->addSubsession(H264VideoFileServerMediaSubsession
+	// 	       ::createNew(*env, inputFileName, reuseFirstSource));
+  //   rtspServer->addServerMediaSession(sms);
+
+  //   announceStream(rtspServer, sms, streamName, inputFileName);
+  // }
+
   // A H.264 video elementary stream:
   {
     char const* streamName = "h264ESVideoTest";
     char const* inputFileName = "test.264";
+    char const* inputFileName1 = "test.aac";
     ServerMediaSession* sms
       = ServerMediaSession::createNew(*env, streamName, streamName,
-				      descriptionString);
+                      descriptionString);
     sms->addSubsession(H264VideoFileServerMediaSubsession
-		       ::createNew(*env, inputFileName, reuseFirstSource));
+               ::createNew(*env, inputFileName, reuseFirstSource));
+    sms->addSubsession(ADTSAudioFileServerMediaSubsession
+        ::createNew(*env, inputFileName1, reuseFirstSource));
     rtspServer->addServerMediaSession(sms);
 
     announceStream(rtspServer, sms, streamName, inputFileName);
   }
 
+
+  // // A H.265 video elementary stream:
+  // {
+  //   char const* streamName = "h265ESVideoTest";
+  //   char const* inputFileName = "test.265";
+  //   ServerMediaSession* sms
+  //     = ServerMediaSession::createNew(*env, streamName, streamName,
+	// 			      descriptionString);
+  //   sms->addSubsession(H265VideoFileServerMediaSubsession
+	// 	       ::createNew(*env, inputFileName, reuseFirstSource));
+  //   rtspServer->addServerMediaSession(sms);
+
+  //   announceStream(rtspServer, sms, streamName, inputFileName);
+  // }
+
   // A H.265 video elementary stream:
   {
     char const* streamName = "h265ESVideoTest";
     char const* inputFileName = "test.265";
+    char const* inputFileName1 = "test.aac";
     ServerMediaSession* sms
       = ServerMediaSession::createNew(*env, streamName, streamName,
 				      descriptionString);
     sms->addSubsession(H265VideoFileServerMediaSubsession
 		       ::createNew(*env, inputFileName, reuseFirstSource));
+    sms->addSubsession(ADTSAudioFileServerMediaSubsession
+            ::createNew(*env, inputFileName1, reuseFirstSource));
     rtspServer->addServerMediaSession(sms);
 
     announceStream(rtspServer, sms, streamName, inputFileName);
