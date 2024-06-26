@@ -50,5 +50,7 @@ private:
     ADTSAudioServerMediaSubsession *m_audio_session_sub = nullptr;
 
     bool serverFunc();
+    bool m_is_startting = false;
+    bool m_server_start = false;
 
 };

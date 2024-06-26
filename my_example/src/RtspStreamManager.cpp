@@ -46,8 +46,16 @@ void RtspStreamManager::run()
 
 bool RtspStreamManager::startServer()
 {
+    m_is_startting = true;
+
     this->start();
-    return true;
+
+    while (m_is_startting)
+    {
+        usleep(500000);
+    }
+
+    return m_server_start;
 }
 
 bool RtspStreamManager::serverFunc()
@@ -122,7 +130,7 @@ bool RtspStreamManager::serverFunc()
 
     {
       m_video_session = H265ServerMediaSubsession::createNew(*env, reuseFirstSource);
-      m_audio_session = ADTSAudioServerMediaSubsession::createNew(*env, reuseFirstSource);
+      m_audio_session = ADTSAudioServerMediaSubsession::createNew(*env, reuseFirstSource, 2, 4, 2);
 printf("%s:%d m_video_session=%d \n", __FILE__, __LINE__, m_video_session);
       char const* streamName = "live001";
       ServerMediaSession* sms = ServerMediaSession::createNew(*env, streamName, streamName);
@@ -150,6 +158,9 @@ printf("%s:%d m_video_session=%d \n", __FILE__, __LINE__, m_video_session);
   // Start the streaming:
   *env << "Beginning streaming...\n";
   // play();
+
+    m_is_startting = false;
+    m_server_start = true;
 
   env->taskScheduler().doEventLoop(); // does not return
 

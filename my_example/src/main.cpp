@@ -38,6 +38,8 @@ int main(int argc, char* argv[])
 {
     RtspStreamManager *stream_manager = new RtspStreamManager();
 
+    stream_manager->startServer();
+
     std::thread([=]
     {
         readH265File(stream_manager);
@@ -56,7 +58,7 @@ int main(int argc, char* argv[])
         
     }).detach();
 
-    stream_manager->startServer();
+    
 
     printf("%s line=%d \n", __FUNCTION__, __LINE__);
     while(1) usleep(10000000000);

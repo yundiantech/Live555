@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++11 -Os -Wall" )
 #启用调试
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++11 -g")
 
-
+# 编译命令:
 # cmake -DCMAKE_C_COMPILER=mips-linux-uclibc-gnu-gcc -DCMAKE_CXX_COMPILER=mips-linux-uclibc-gnu-g++ ..
 
 # set the include files 

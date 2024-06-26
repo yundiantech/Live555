@@ -3,15 +3,17 @@
 #include "adts_source.h"
 #include "MPEG4GenericRTPSink.hh"
 
-ADTSAudioServerMediaSubsession* ADTSAudioServerMediaSubsession::createNew(UsageEnvironment& env, Boolean reuseFirstSource) 
+ADTSAudioServerMediaSubsession* ADTSAudioServerMediaSubsession::createNew(UsageEnvironment& env, Boolean reuseFirstSource, u_int8_t profile, u_int8_t sampling_frequency_index, u_int8_t channel_configuration) 
 {
-  return new ADTSAudioServerMediaSubsession(env, reuseFirstSource);
+  return new ADTSAudioServerMediaSubsession(env, reuseFirstSource, profile, sampling_frequency_index, channel_configuration);
 }
 
-ADTSAudioServerMediaSubsession::ADTSAudioServerMediaSubsession(UsageEnvironment& env, Boolean reuseFirstSource)
+ADTSAudioServerMediaSubsession::ADTSAudioServerMediaSubsession(UsageEnvironment& env, Boolean reuseFirstSource, u_int8_t profile, u_int8_t sampling_frequency_index, u_int8_t channel_configuration)
   : OnDemandServerMediaSubsession(env, reuseFirstSource) 
 {
-
+    m_profile = profile;
+    m_sampling_frequency_index = sampling_frequency_index;
+    m_channel = channel_configuration;
 }
 
 ADTSAudioServerMediaSubsession::~ADTSAudioServerMediaSubsession() 
@@ -41,13 +43,13 @@ void ADTSAudioServerMediaSubsession::inputFrame(AACFramePtr audioFrame)
     }
 }
 
-FramedSource* ADTSAudioServerMediaSubsession::createNewStreamSource(unsigned /*clientSessionId*/, unsigned& estBitrate) 
+FramedSource* ADTSAudioServerMediaSubsession::createNewStreamSource(unsigned /*clientSessionId*/, unsigned& estBitrate)
 {
   estBitrate = 96; // kbps, estimate
 
   printf("%s:%d \n", __FILE__, __LINE__);
   // Create the video source:
-  ADTSAudioSource* source = ADTSAudioSource::createNew(envir(), 2, 8, 1); //16K 
+  ADTSAudioSource* source = ADTSAudioSource::createNew(envir(), m_profile, m_sampling_frequency_index, m_channel); 
   
   if (source == NULL) return NULL;
 

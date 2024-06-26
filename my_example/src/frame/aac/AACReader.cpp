@@ -60,7 +60,7 @@ bool AACReader::ReadAdtsHeader(unsigned char * adts_headerbuf, ADTS_HEADER *adts
         adts->copyright_identification_start = (unsigned int) adts_headerbuf[3] & 0x04 >> 2;
       //  printf( "adts:copyright_identification_start  %d\n",adts.copyright_identification_start);
         adts->aac_frame_length = (((((unsigned int) adts_headerbuf[3]) & 0x03) << 11) | (((unsigned int) adts_headerbuf[4] & 0xFF) << 3)| ((unsigned int) adts_headerbuf[5] & 0xE0) >> 5) ;
-      //  printf( "adts:aac_frame_length  %d\n",adts.aac_frame_length);
+      //  printf( "adts:aac_frame_length  %d\n",adts->aac_frame_length);
         adts->adts_buffer_fullness = (((unsigned int) adts_headerbuf[5] & 0x1f) << 6 | ((unsigned int) adts_headerbuf[6] & 0xfc) >> 2);
       //  printf( "adts:adts_buffer_fullness  %d\n",adts.adts_buffer_fullness);
         adts->no_raw_data_blocks_in_frame = ((unsigned int) adts_headerbuf[6] & 0x03);
@@ -112,15 +112,16 @@ AACFramePtr AACReader::getNextFrame()
         }
     }
 
-    unsigned char* buffer = mAACBuffer + pos + 7;
-    int buffersize = adtsHeader.aac_frame_length - 7;
+    unsigned char* buffer = mAACBuffer + pos;// + 7;
+    int buffersize = adtsHeader.aac_frame_length;// - 7;
 
     AACFramePtr aacFrame = std::make_shared<AACFrame>();
-    aacFrame->setFrameBuffer((uint8_t*)&adtsHeader, ADTS_HEADER_LENTH, buffer, buffersize);
+    aacFrame->setFrameBuffer(buffer, buffersize);
+    aacFrame->setAdtsHeader(adtsHeader);
 
     /// 将这一帧数据去掉
     /// 把后一帧数据覆盖上来
-    int pos_2 = pos + buffersize + 7;
+    int pos_2 = pos + buffersize;// + 7;
     int leftSize = mBufferSize - pos_2;
     memmove(mAACBuffer, mAACBuffer + pos_2, leftSize);
     mBufferSize = leftSize;

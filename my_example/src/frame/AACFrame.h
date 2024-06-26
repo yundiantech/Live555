@@ -67,6 +67,8 @@ public:
     void setFrameBuffer(const uint8_t * const adtsBuffer, const unsigned int &adtsSize, const uint8_t * const buffer, const unsigned int &size);
 
     uint8_t *getBuffer(){return mFrameBuffer;}
+    ADTS_HEADER &getAdtsHeader(){return mAdtsHeader;}
+
     unsigned int getSize(){return  mFrameBufferSize;}
 
     void setTimeStamp(uint64_t t){m_timestamp_ms = t;}

@@ -214,19 +214,24 @@ do {
 
   
   int pos = 0;
-  int adts_size = 7;
+  int adts_header_size = 7;
   uint8_t* headers = audioFrame->getBuffer();
-  pos += adts_size;
+  pos += adts_header_size;
 
   // Extract important fields from the headers:
   Boolean protection_absent = headers[1]&0x01;
   u_int16_t frame_length = ((headers[3]&0x03)<<11) | (headers[4]<<3) | ((headers[5]&0xE0)>>5);
+  
+  // if (frame_length <= 0)
+  // {
+  //     frame_length = audioFrame->getSize() - adts_header_size;
+  // }
 #if 0
   u_int16_t syncword = (headers[0]<<4) | (headers[1]>>4);
   fprintf(stderr, "Read frame: syncword 0x%x, protection_absent %d, frame_length %d\n", syncword, protection_absent, frame_length);
   if (syncword != 0xFFF) fprintf(stderr, "WARNING: Bad syncword!\n");
 #endif
-  unsigned numBytesToRead = frame_length > adts_size ? frame_length - adts_size : 0;
+  unsigned numBytesToRead = frame_length > adts_header_size ? frame_length - adts_header_size : 0;
 // printf("%s:%d numBytesToRead=%d size=%d frame_length=%d\n", __FILE__, __LINE__, numBytesToRead, audioFrame->getSize(), frame_length);
   // If there's a 'crc_check' field, skip it:
   if (!protection_absent) 
@@ -246,7 +251,6 @@ do {
   if (numBytesToRead > (audioFrame->getSize() - pos))
   {
       printf("%s:%d numBytesToRead=%d size=%d frame_length=%d pos=%d \n\n\n", __FILE__, __LINE__, numBytesToRead, audioFrame->getSize(), frame_length, pos);
-
       break;
   }
 

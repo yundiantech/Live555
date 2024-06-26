@@ -64,7 +64,7 @@ void H265Source::doGetNextFrame()
 // usleep(1000000);
   
 // fFrameSize = fread(fTo, 1, fMaxSize, fp);
-  printf("%s:%d fMaxSize=%d fFrameSize=%d pointer=%d m_is_stop=%d m_frames.size()=%d \n", __FILE__, __LINE__, fMaxSize, fFrameSize, this, m_is_stop, m_frames.size());
+  // printf("%s:%d fMaxSize=%d fFrameSize=%d pointer=%d m_is_stop=%d m_frames.size()=%d \n", __FILE__, __LINE__, fMaxSize, fFrameSize, this, m_is_stop, m_frames.size());
 
 //     // We don't know a specific play time duration for this data,
 //     // so just record the current time as being the 'presentation time':
